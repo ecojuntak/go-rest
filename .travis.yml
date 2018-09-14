@@ -2,6 +2,9 @@ language: go
 
 go:
   - master
-  
+
+before_script:
+  - cp config/config.example.yaml config/config.yaml
+
 script:
   - go test -v ./...
