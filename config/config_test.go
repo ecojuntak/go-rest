@@ -19,3 +19,8 @@ func TestConfigFileIsExist(t *testing.T) {
 	_, err := os.Stat(fullPathConfigFile)
 	assert.Equal(t, nil, err)
 }
+
+func TestLoadConfig(t *testing.T) {
+	err := config.LoadConfig()
+	assert.Equal(t, nil, err)
+}
