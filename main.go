@@ -17,12 +17,6 @@ func InitConfig() (err error) {
 }
 
 func startServer() {
-	err := InitConfig()
-	if err != nil {
-		log.Fatal("Error while loading the configuration")
-		log.Fatal(err.Error())
-	}
-
 	model.InitDatabase()
 
 	server := &http.Server{
@@ -35,6 +29,12 @@ func startServer() {
 }
 
 func main() {
+	err := InitConfig()
+	if err != nil {
+		log.Fatal("Error while loading the configuration")
+		log.Fatal(err.Error())
+	}
+
 	cliApp := cli.NewApp()
 	cliApp.Name = "GO-REST"
 	cliApp.Version = "1.0.0"
@@ -43,7 +43,31 @@ func main() {
 			Name:        "migrate",
 			Description: "Run database migration",
 			Action: func(c *cli.Context) error {
-				err := model.Migrate()
+				err := model.InitDatabase()
+				if err != nil {
+					log.Println(err)
+				}
+				err = model.Migrate()
+				if err != nil {
+					log.Println(err)
+				} else {
+					log.Println("Migration success")
+				}
+				return err
+			},
+		},
+		{
+			Name:        "seed",
+			Description: "Run database seeder",
+			Action: func(c *cli.Context) error {
+				err := model.InitDatabase()
+				if err != nil {
+					log.Println(err)
+				}
+				err = model.RunSeeder()
+				if err != nil {
+					log.Println("Main.go", err)
+				}
 				return err
 			},
 		},
