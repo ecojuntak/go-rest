@@ -1,3 +1,10 @@
 APP_NAME: GO-REST
 PORT: 8000
 HOST: localhost
+
+DB_DRIVER: mysql
+DB_HOST: 127.0.0.1
+DB_PORT: 3306
+DB_NAME: gorest
+DB_USERNAME: gorest
+DB_PASSWORD: secret

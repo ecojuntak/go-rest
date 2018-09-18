@@ -20,3 +20,7 @@ func LoadConfig() (err error) {
 
 	return
 }
+
+func GetAddress() string {
+	return viper.GetString("HOST") + ":" + viper.GetString("PORT")
+}
