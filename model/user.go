@@ -1,9 +1,9 @@
 package model
 
 type User struct {
-	ID    uint64 `gorm:"type:uint64;column:id" json:"id"`
-	Name  string `gorm:"type:varchar(100);column:name" json:"name"`
-	Email string `gorm:"type:varchar(100);unique;column:email" json:"email"`
+	ID    uint64 `gorm:"type:int;column:id" json:"id" `
+	Name  string `gorm:"type:varchar(100);column:name" json:"name" faker:"name"`
+	Email string `gorm:"type:varchar(100);unique;column:email" json:"email" faker:"email"`
 }
 
 type UserTransaction interface {
@@ -18,4 +18,8 @@ func (u *User) GetAll() []User {
 	db.Find(&users)
 
 	return users
+}
+
+func (u *User) Store(user User) {
+	db.Save(user)
 }

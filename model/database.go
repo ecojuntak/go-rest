@@ -2,10 +2,11 @@ package model
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/spf13/viper"
 )
 
@@ -14,25 +15,21 @@ var (
 	err error
 )
 
-func InitDatabase() {
+func InitDatabase() (err error) {
 	dbDriver := viper.GetString("DB_DRIVER")
 	var connectionString string
 
 	if dbDriver == "mysql" {
 		connectionString = buildMysqlConnectionString()
 	} else if dbDriver == "postgres" {
-		buildPostgresqlConnectionString()
-	} else if dbDriver == "sqlite" {
-		buildSqliteConnectionString()
-	} else if dbDriver == "sqlserver" {
-		buildSqlserverConnectionString()
+		connectionString = buildPostgresqlConnectionString()
+	} else if dbDriver == "sqlite3" {
+		connectionString = buildSqliteConnectionString()
 	}
 
 	db, err = openConnection(dbDriver, connectionString)
 
-	if err != nil {
-		log.Println(err)
-	}
+	return
 }
 
 func openConnection(dbDriver, connection string) (db *gorm.DB, err error) {
@@ -44,18 +41,16 @@ func openConnection(dbDriver, connection string) (db *gorm.DB, err error) {
 }
 
 func buildMysqlConnectionString() (connectionString string) {
-	connectionString = viper.GetString("DB_USERNAME") + ":" + viper.GetString("DB_PASSWORD") + "@/" + viper.GetString("DB_NAME") + "?charset=utf8&parseTime=True&loc=Local"
+	connectionString = fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local", viper.GetString("DB_USERNAME"), viper.GetString("DB_PASSWORD"), viper.GetString("DB_NAME"))
 	return
 }
 
-func buildPostgresqlConnectionString() {
-	fmt.Println("building string for postgres")
+func buildPostgresqlConnectionString() (connectionString string) {
+	connectionString = fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s", viper.GetString("DB_HOST"), viper.GetString("DB_PORT"), viper.GetString("DB_USERNAME"), viper.GetString("DB_NAME"), viper.GetString("DB_PASSWORD"), viper.GetString("DB_POSTGRES_SSL_MODE"))
+	return
 }
 
-func buildSqliteConnectionString() {
-	fmt.Println("building string for sqlite")
-}
-
-func buildSqlserverConnectionString() {
-	fmt.Println("building string for sqlserver")
+func buildSqliteConnectionString() (connectionString string) {
+	connectionString = fmt.Sprintf(viper.GetString("DB_NAME"))
+	return
 }
