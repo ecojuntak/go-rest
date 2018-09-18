@@ -8,3 +8,4 @@ DB_PORT: 3306
 DB_NAME: gorest
 DB_USERNAME: gorest
 DB_PASSWORD: secret
+DB_POSTGRES_SSL_MODE: disable
