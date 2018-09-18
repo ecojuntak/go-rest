@@ -12,4 +12,7 @@
 *.out
 
 # Config file
-config/config.yaml 
+config/config.yaml
+
+# SQLite3
+model/database.db
