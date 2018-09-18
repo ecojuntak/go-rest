@@ -5,9 +5,16 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/ecojuntak/go-rest/config"
 	"github.com/ecojuntak/go-rest/controller"
+	"github.com/ecojuntak/go-rest/model"
 	"github.com/stretchr/testify/assert"
 )
+
+func init() {
+	config.LoadConfig()
+	model.InitDatabase()
+}
 
 func TestGetAllUsers(t *testing.T) {
 	request, err := http.NewRequest("GET", "/", nil)
@@ -20,5 +27,4 @@ func TestGetAllUsers(t *testing.T) {
 	handler.ServeHTTP(recorder, request)
 
 	assert.Equal(t, http.StatusOK, recorder.Code)
-	assert.Equal(t, `"Hi, GO-REST"`, recorder.Body.String())
 }
