@@ -3,7 +3,11 @@ language: go
 go:
   - master
 
+services:
+  - postgresql
+
 before_script:
+  - psql -c 'CREATE DATABASE gorest;' -U postgres
   - cp config/config.example.yaml config/config.yaml
 
 script:
