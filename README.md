@@ -68,4 +68,7 @@ go run main.go start
 ## Contribution
 Pull requests are welcome!
 
+## What next?
+Look up our [wiki](https://github.com/ecojuntak/go-rest/wiki) for next features that we want create.
+
 Cappy Hoding!
