@@ -9,13 +9,15 @@ import (
 var userModel *User
 
 func RunSeeder() (err error) {
-	user := User{}
-	err = faker.FakeData(&user)
-	if err != nil {
-		fmt.Println(err)
+	var user = User{}
+
+	for i := 0; i < 10; i++ {
+		err = faker.FakeData(&user)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		userModel.Store(&user)
 	}
-
-	userModel.Store(user)
-
 	return
 }

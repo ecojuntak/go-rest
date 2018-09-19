@@ -1,9 +1,17 @@
 package model
 
+import (
+	"time"
+)
+
 type User struct {
-	ID    uint64 `gorm:"type:int;column:id" json:"id" `
-	Name  string `gorm:"type:varchar(100);column:name" json:"name" faker:"name"`
-	Email string `gorm:"type:varchar(100);unique;column:email" json:"email" faker:"email"`
+	// gorm.Model
+	ID        uint64     `gorm:"AUTO_INCREMENT" json:"id" faker:"-"`
+	Name      string     `gorm:"type:varchar(100);" json:"name" faker:"name"`
+	Email     string     `gorm:"type:varchar(100);unique;" json:"email" faker:"email"`
+	CreatedAt time.Time  `faker:"-"`
+	UpdatedAt time.Time  `faker:"-"`
+	DeletedAt *time.Time `faker:"-"`
 }
 
 type UserTransaction interface {
@@ -20,6 +28,6 @@ func (u *User) GetAll() []User {
 	return users
 }
 
-func (u *User) Store(user User) {
-	db.Save(user)
+func (u *User) Store(user *User) {
+	db.Create(&user)
 }
